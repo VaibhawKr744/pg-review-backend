@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from routers import auth
+
 app = FastAPI(title="PG Review API")
+app.include_router(auth.router)
 
 app.add_middleware(
     CORSMiddleware,
