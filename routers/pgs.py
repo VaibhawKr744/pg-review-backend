@@ -35,8 +35,13 @@ def create_pg(
 
 
 @router.get("/", response_model=List[schemas.PGOut])
-def list_pgs(db: Session = Depends(get_db)):
-    return db.query(models.PG).all()
+def list_pgs(city: str | None = None, db: Session = Depends(get_db)):
+    query = db.query(models.PG)
+
+    if city:
+        query = query.filter(models.PG.city.ilike(f"%{city}%"))
+
+    return query.all()
 
 
 @router.get("/{pg_id}", response_model=schemas.PGOut)
